@@ -1,0 +1,510 @@
+﻿@page "/EditarReserva/{Id:int}"
+@using Peluqueria.Aplicacion.Data.ModelsDTO
+@using System.Text.Json
+@using Peluqueria.Pages.Reserva
+@using System.Text
+@using System.Net.Http.Json
+
+<h1 class="mb-4 text-center text-primary">Editar reserva</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3 d-flex">
+                        <div class="card shadow-sm mb-3 flex-fill">
+                            <div class="card-body">
+                                <h5 class="card-title">Seleccionar cliente</h5>
+                                <!--metodo para buscar un cliente-->
+                                <h4>Buscar clientes</h4>
+                                <EditForm Model="busc">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />
+                                    <div class="input-group mb-2">
+                                        <input type="text" @bind-value="busc.nombre" class="form-control" placeholder="Nombre del cliente" />
+                                        <button class="btn btn-primary" type="button" @onclick="() => Buscar()">Buscar</button>
+                                    </div>
+                                </EditForm>
+                                <!--mensajes de error o exito-->
+                                @if (!string.IsNullOrEmpty(errorBuscar))
+                                {
+                                    <div class="alert alert-warning">@errorBuscar</div>
+                                }
+                                <!--select de clientes-->
+                                <select class="form-select mt-3" @bind="idClienteSeleccionado">
+                                    <option value="0">Seleccione un cliente</option>
+                                    @foreach (var cli in ListaClientes)
+                                    {
+                                        <option value="@cli.IdCliente">@cli.Nombre @cli.Apellido</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 d-flex">
+                        <div class="card shadow-sm mb-3 flex-fill">
+                            <div class="card-body">
+                                <!--select de profesionales-->
+                                <h5 class="card-title">Profesional</h5>
+                                <select class="form-select" @bind="idProfesionalSeleccionado">
+                                    <option value="0">Seleccione un profesional</option>
+                                    @foreach (var emp in ListaProfesionales)
+                                    {
+                                        <option value="@emp.IdProfesional">@emp.Nombre @emp.Apellido</option>
+                                    }
+                                </select>
+                                @if (!string.IsNullOrEmpty(errorProfesional))
+                                {
+                                    <div class="alert alert-warning mt-2">@errorProfesional</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex">
+                        <div class="card shadow-sm mb-3 flex-fill">
+                            <div class="card-body">
+                                <!--select de servicio-->
+                                <h5 class="card-title">Servicio</h5>
+                                <select class="form-select" @bind="idServicioSeleccionado">
+                                    <option value="0">Seleccione un servicio</option>
+                                    @foreach (var serv in ListaServicios)
+                                    {
+                                        <option value="@serv.IdServicio">@serv.Nombre</option>
+                                    }
+                                </select>
+                                @if (!string.IsNullOrEmpty(errorServicio))
+                                {
+                                    <div class="alert alert-warning mt-2">@errorServicio</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex">
+                        <div class="card shadow-sm mb-3 flex-fill">
+                            <div class="card-body">
+                                <!--formulario de fecha y hora-->
+                                <EditForm Model="reserva">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />
+                                    <div class="mb-2">
+                                        <label for="RFecha" class="form-label">Fecha</label>
+                                        <input type="date" class="form-control" @bind="reserva.FechaReserva" />
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="RDuracion" class="form-label">Hora</label>
+                                        <input type="time" class="form-control" @bind="hora" />
+                                    </div>
+                                    <button class="btn btn-success w-100" type="button" @onclick="() => TomaDeDatos()">Agregar Reserva</button>
+                                </EditForm>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive shadow-sm" style="max-height: 600px;">
+                    <!--tabla reserva-->
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Duración</th>
+                                <th>Profesional</th>
+                                <th>Estado</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ListaReserva)
+                            {
+                                <tr>
+                                    <td>@item.IdReserva</td>
+                                    <td>@item.FechaReserva.ToShortDateString()</td>
+                                    <td>@item.HoraReserva</td>
+                                    <td>@item.reservaClienteDTO.Nombre @item.reservaClienteDTO.Apellido</td>
+                                    <td>@item.reservaServicioDTO.Nombre</td>
+                                    <td>@item.reservaServicioDTO.DuracionMinutos</td>
+                                    <td>@item.reservaProfecionalDTO.Nombre @item.reservaProfecionalDTO.Apellido</td>
+                                    <td>@item.reservaEstadoReservaDTO.NombreEstado</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                @if (!string.IsNullOrEmpty(errorReserva))
+                {
+                    <div class="alert alert-warning">@errorReserva</div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+@code {
+    private List<ClienteDTO> ListaClientes = new List<ClienteDTO>();
+    private List<ProfesionalDTO> ListaProfesionales = new List<ProfesionalDTO>();
+    private List<ServicioDTO> ListaServicios = new List<ServicioDTO>();
+    private string  errorGetReserva, errorCliente,
+                    errorProfesional, errorServicio, errorReserva, errorBuscar;
+    private ClienteReservaBuscar busc = new ClienteReservaBuscar();
+    private ClienteDTO clienteListado = new ClienteDTO();
+    private ClienteDTO nuevoCliente = new ClienteDTO();
+    private ProfesionalDTO Profesional = new ProfesionalDTO();
+    private ServicioDTO Servicio = new ServicioDTO();
+
+    private ReservaDTO reserva = new ReservaDTO();
+    private List<ReservaDTO> ListaReserva = new List<ReservaDTO>();
+
+
+    //variables para guardar los ids en los select
+    private int idServicioSeleccionado;
+    private int idProfesionalSeleccionado;
+    private int idClienteSeleccionado;
+    private int idreservaBuscar;
+
+    private DateTime hora = new DateTime();
+
+    //id enviado desde Reseva.razor
+    [Parameter] public int Id { get; set; }
+
+    [Inject]
+    protected IHttpClientFactory Http { get; set; }
+    [Inject]
+    private NavigationManager Nav { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ListarClientes();
+        await ListarProfesionales();
+        await ListarServicios();
+        await BuscarReservasID();
+
+    }
+
+    //metodo para listar clientes
+    private async Task ListarClientes()
+    {
+        var httpClient = Http.CreateClient("PeluqueriaAPI");
+        using HttpResponseMessage respuesta = await httpClient.GetAsync("api/Cliente");//cominicacion con ClienteController
+
+        if (respuesta.IsSuccessStatusCode)//se listan los clientes en caso de ser exitosa consulta
+        {
+            using var contenido = await respuesta.Content.ReadAsStreamAsync();
+            ListaClientes = await JsonSerializer.DeserializeAsync<List<ClienteDTO>>(contenido,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            errorCliente = "";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            errorCliente = "No hay elementos en la lista";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+        {
+            errorCliente = await respuesta.Content.ReadAsStringAsync();
+        }
+        _ = Task.Run(async () =>//los mensajes desaparesen en ocho segundos
+        {
+            await Task.Delay(8000);
+            errorCliente = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    //metodo para listar a los profesionales
+    private async Task ListarProfesionales()
+    {
+        var httpClient = Http.CreateClient("PeluqueriaAPI");
+        using HttpResponseMessage respuesta = await httpClient.GetAsync("api/Profesional");//cominicacion con ProfesionalController
+
+        if (respuesta.IsSuccessStatusCode)//se listan los prefesionales en caso de ser exitosa la consulta
+        {
+            using var contenido = await respuesta.Content.ReadAsStreamAsync();
+            ListaProfesionales = await JsonSerializer.DeserializeAsync<List<ProfesionalDTO>>(contenido,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            errorProfesional = "";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            errorProfesional = "No hay elementos en la lista";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+        {
+            errorProfesional = await respuesta.Content.ReadAsStringAsync();
+        }
+        _ = Task.Run(async () =>
+            {
+                await Task.Delay(8000);
+                errorProfesional = "";
+                await InvokeAsync(StateHasChanged);
+            });
+    }
+
+    //metodo para listar los servicios
+    private async Task ListarServicios()
+    {
+        var httpClient = Http.CreateClient("PeluqueriaAPI");
+        using HttpResponseMessage respuesta = await httpClient.GetAsync("api/Servicio");//cominicacion con ServicioController
+
+        if (respuesta.IsSuccessStatusCode)//se listan los servicios en caso de que la consulta sea exitosa
+        {
+            using var contenido = await respuesta.Content.ReadAsStreamAsync();
+            ListaServicios = await JsonSerializer.DeserializeAsync<List<ServicioDTO>>(contenido,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            errorServicio = "";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            errorServicio = "No hay elementos en la lista";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+        {
+            errorServicio = await respuesta.Content.ReadAsStringAsync();
+        }
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorServicio = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    //se agregan todos los datos en el objeto reserva
+    private async Task TomaDeDatos()
+    {
+        if (idServicioSeleccionado != 0 && idProfesionalSeleccionado != 0)
+        {
+            reserva.IdCliente = idClienteSeleccionado;
+            if (reserva.IdCliente != 0)
+            {
+                reserva.IdReserva = ListaReserva[0].IdReserva;
+                reserva.IdServicio = idServicioSeleccionado;
+                reserva.IdProfesional = idProfesionalSeleccionado;
+                reserva.IdEstado = 1;
+                reserva.FechaCreacion = DateTime.Now;
+                reserva.FechaReserva = reserva.FechaReserva.Date + hora.TimeOfDay;
+                TimeSpan horaReserva = hora.TimeOfDay;
+                reserva.HoraReserva = horaReserva;
+                bool repetido = await ReservaRepetido();//metodo para ver si la reserva se repite
+                if (!repetido)
+                {
+                    await EditarLaReserva();//se edita la reserva
+                }
+                else
+                {
+                    errorReserva += "Ya hay una reserva en ese horario\n";
+                }
+            }
+            else { errorCliente += "seleccione el cliente de la lista o cree uno nuevo\n"; }
+        }
+        else { errorProfesional = "Seleccione un profesional y servicio"; }
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorCliente = "";
+            errorReserva = "";
+            errorProfesional = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    //metodo para ver si la reserva se repite
+    private async Task<bool> ReservaRepetido()
+    {
+
+        var nuevojson = new StringContent(JsonSerializer.Serialize(reserva),
+            Encoding.UTF8,
+            "application/json");
+
+        var httpcli = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpcli.PostAsync("api/Reserva/repetida", nuevojson);
+
+
+        if (respuesta.IsSuccessStatusCode)
+        {
+
+            return true;
+        }
+        return false;
+    }
+
+    //metodo para editar la reserva
+    private async Task EditarLaReserva()
+    {
+        var nuevojson = new StringContent(JsonSerializer.Serialize(reserva),
+        Encoding.UTF8,
+        "application/json");
+
+        var httpcli = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpcli.PutAsync("api/Reserva/editar", nuevojson);
+
+
+        if (respuesta.IsSuccessStatusCode)
+        {
+            //se limpian los campos
+            var resultadoSerializado = await respuesta.Content.ReadAsStringAsync();
+            Console.WriteLine(resultadoSerializado);
+            await BuscarReservasID();
+            nuevoCliente = new ClienteDTO();
+            reserva = new ReservaDTO();
+            idClienteSeleccionado = 0;
+            idProfesionalSeleccionado = 0;
+            idServicioSeleccionado = 0;
+            reserva.FechaReserva = DateTime.Today;
+            hora = DateTime.Now;
+            errorReserva += "Se edito la reserva";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            var resultadoSerializado = await respuesta.Content.ReadAsStringAsync();
+            errorReserva += "No se encontro el id de la reserva a editar, error 404";
+        }
+        else
+        {
+            var resultadoSerializado = await respuesta.Content.ReadAsStringAsync();
+            errorReserva = resultadoSerializado;
+        }
+
+    }
+
+    //metodo para buscar un cliente
+    private async Task Buscar()
+    {
+        if (busc.nombre != "")
+        {
+
+            if (int.TryParse(busc.nombre, out int id))
+            {
+                var httpClient = Http.CreateClient("PeluqueriaAPI");
+                using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/Cliente/id?id={id}");
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                    var cli = await JsonSerializer.DeserializeAsync<ClienteDTO>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    List<ClienteDTO> b = new List<ClienteDTO>();
+                    b.Add(cli);
+                    ListaClientes = b;
+                    errorBuscar = "";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    errorBuscar = "No hay elementos en la lista";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorBuscar = await respuesta.Content.ReadAsStringAsync();
+                }
+            }
+            else
+            {
+
+                var httpClient = Http.CreateClient("PeluqueriaAPI");
+                using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/Cliente/nombre?nombre={busc.nombre}");
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                    var cli = await JsonSerializer.DeserializeAsync<ClienteDTO>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    List<ClienteDTO> b = new List<ClienteDTO>();
+                    b.Add(cli);
+                    ListaClientes = b;
+                    errorBuscar = "";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    errorBuscar = "No hay elementos en la lista";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorBuscar = await respuesta.Content.ReadAsStringAsync();
+                }
+            }
+
+        }
+        else { await ListarClientes(); }
+    }
+
+    //metodo para buscar reservas por id/ seleccionar la reserva enviada desde Reserva.razor
+    private async Task BuscarReservasID()
+    {
+        if (Id != 0)
+        {
+            var httpClient = Http.CreateClient("PeluqueriaAPI");
+            using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/Reserva/id?id={Id}");
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                ListaReserva = await JsonSerializer.DeserializeAsync<List<ReservaDTO>>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (ListaReserva != null)
+                {
+                    idClienteSeleccionado = ListaReserva[0].IdCliente;
+                    idServicioSeleccionado = ListaReserva[0].IdServicio;
+                    idProfesionalSeleccionado = ListaReserva[0].IdProfesional;
+                    reserva.FechaReserva = ListaReserva[0].FechaReserva;
+                    TimeSpan horaReserva = ListaReserva[0].HoraReserva;
+                    hora = reserva.FechaReserva.Date + horaReserva;
+                    errorReserva = "";
+                }
+                else
+                {
+                    errorReserva += "No se encontraron los datos de la reserva en la lista. Va a ser redireccionado al listado de reservas\n";
+                    _ = Task.Run(async () =>
+                        {
+                            await Task.Delay(9000);
+                            Nav.NavigateTo($"/Reserva");
+                            errorReserva = "";
+                            errorProfesional = "";
+                            await InvokeAsync(StateHasChanged);
+                        });
+
+                }
+            }
+            else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                errorReserva += "No hay elementos en la lista\n";
+            }
+            else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                errorReserva = await respuesta.Content.ReadAsStringAsync();
+            }
+        }
+        else
+        {
+            errorReserva += "No se pudo encontrar la reserva seleccionada, sera redirigido al listado de reservas\n";
+            _ = Task.Run(async () =>
+       {
+           await Task.Delay(9000);
+           Nav.NavigateTo($"/Reserva");
+           errorReserva = "";
+           errorProfesional = "";
+           await InvokeAsync(StateHasChanged);
+       });
+        }
+        _ = Task.Run(async () =>
+    {
+        await Task.Delay(9000);
+        errorReserva = "";
+        errorProfesional = "";
+        await InvokeAsync(StateHasChanged);
+    });
+    }
+}

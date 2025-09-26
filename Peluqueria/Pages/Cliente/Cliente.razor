@@ -1,0 +1,375 @@
+﻿@page "/Cliente"
+@using Peluqueria.Aplicacion.Data.ModelsDTO
+@using System.Text.Json
+@using Peluqueria.Pages.Clientes
+@using System.Text
+
+<h1 class="mb-4 text-center text-primary">Clientes</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+
+                        <!--Formulario para crear un nuevo cliente-->
+                        <h4 class="card-title">Agregar cliente</h4>
+                        <EditForm Model="nuevo" OnValidSubmit="AgregarCliente">
+                            <DataAnnotationsValidator />
+                            <div>
+                                <label for="CNuevNom" class="form-label">Nombre</label>
+                                <InputText id="CNuevNom" @bind-Value="nuevo.Nombre" class="form-control mb-3">PlaceholderContext="Nombre"</InputText>
+                                <ValidationMessage For="@(() => nuevo.Nombre)" />
+                            </div>
+                            <div>
+                                <label for="CNuevApe" class="form-label">Apellido</label>
+                                <InputText id="CNuevApe" @bind-Value="nuevo.Apellido" class="form-control mb-3">PlaceholderContext="Apellido"</InputText>
+                                <ValidationMessage For="@(() => nuevo.Apellido)" />
+                            </div>
+                            <div>
+                                <label for="CNuevFecha" class="form-label">Fecha de registro</label>
+                                <InputDate id="CNuevFecha" @bind-Value="nuevo.FechaRegistro" class="form-control mb-3"></InputDate>
+                            </div>
+                            <input class="btn btn-primary" id="Submit1" type="submit" value="Agregar" />
+                        </EditForm>
+                        @if (!string.IsNullOrEmpty(errorPost))
+                        {
+                            <div class="alert alert-warning mt-2">@errorPost</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+
+                        <!--Formulario para editar el cliente-->
+                        <h4 class="card-title">Editar cliente</h4>
+                        <EditForm Model="editado" OnValidSubmit="Editar">
+                            <DataAnnotationsValidator />
+                            <div>
+                                <input type="hidden" @bind="editado.IdCliente" />
+                                <label class="form-label" for="PEditNom">Nombre</label>
+                                <InputText class="form-control mb-3" id="PEditNom" @bind-Value="editado.Nombre">PlaceholderContext="Nombre"</InputText>
+                                <ValidationMessage For="@(() => editado.Nombre)" />
+                            </div>
+                            <div>
+                                <label class="form-label" for="PEditApe">Apellido</label>
+                                <InputText class="form-control mb-3" id="PEditApe" @bind-Value="editado.Apellido">PlaceholderContext="Apellido"</InputText>
+                                <ValidationMessage For="@(() => nuevo.Apellido)" />
+                            </div>
+                            <div>
+                                <label for="PEditFecha" class="form-label">Fecha de registro</label>
+                                <InputDate id="PEditFecha mb-3" @bind-Value="editado.FechaRegistro" class="form-control mb-3"></InputDate>
+                            </div>
+                            <input type="submit" value="Editar" class="btn btn-warning" />
+
+                            <!--aca se muestran diversos mensajes ya sea de exito o error-->
+                            @if (!string.IsNullOrEmpty(errorPut))
+                            {
+                                <div class="alert alert-warning mt-2">@errorPut</div>
+                            }
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row-md-6">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+
+                    <!--Formulario para buscar el cliente en la tabla-->
+                    <h4 class="card-title">Buscar clientes</h4>
+                    <EditForm Model="busc">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="input-group">
+                            <input type="text" @bind-value="busc.nombre" class="form-control col-sm-3" />
+                            <input type="button" value="Buscar" @onclick="() => Buscar()" class="btn btn-outline-primary" />
+                        </div>
+                    </EditForm>
+                    @if (!string.IsNullOrEmpty(errorGetId))
+                    {
+                        <div class="alert alert-warning mt-2">@errorGetId</div>
+                    }
+                </div>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive shadow-sm" style="max-height: 600px;">
+                        @if (!string.IsNullOrEmpty(errorGet))
+                        {
+                            <div class="alert alert-warning mt-2">@errorGet</div>
+                        }
+                        else
+                        {
+                            <!--Tabla para listar a los clientes (si esta esta vacia se muestra un mensaje en su lugar)-->
+                            <table class="table table-striped table-hover mb-0">
+                                <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Fecha registro</th>
+                                        <th colspan="2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Lista)
+                                    {
+                                        <tr>
+                                            <td>@item.IdCliente</td>
+                                            <td>@item.Nombre</td>
+                                            <td>@item.Apellido</td>
+                                            <td>@item.FechaRegistro?.ToShortDateString()</td>
+                                            <td>
+                                                <input type="button" value="Editar" class="btn btn-sm btn-warning" @onclick="() => SeleccionarEditar(item)" />
+                                            </td>
+                                            <td>
+                                                <input type="button" value="Eliminar" class="btn btn-sm btn-danger" @onclick="() => Borrar(item)" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        @if (!string.IsNullOrEmpty(errorDelete))
+                        {
+                            <div class="text-info"><b>@errorDelete</b></div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ClienteDTO> Lista = new List<ClienteDTO>();//Lista para la tabla
+    private string errorGet, errorGetId, errorPut, errorDelete, errorPost;//strings para los diversos mensajes de error o exito
+    private ClienteBuscar busc = new ClienteBuscar();//objestos para las distintas operaciones
+    private ClienteDTO nuevo = new ClienteDTO();
+    private ClienteDTO editado = new ClienteDTO();
+
+    [Inject]
+    protected IHttpClientFactory Http { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Listar();
+    }
+
+    //metodo para listar clientes en la tabla
+    private async Task Listar()
+    {
+        var httpClient = Http.CreateClient("PeluqueriaAPI");
+        using HttpResponseMessage respuesta = await httpClient.GetAsync("api/Cliente");//comunicación con el archivo ClienteController
+
+        if (respuesta.IsSuccessStatusCode)//en caso de encontrar clientes se los lista
+        {
+            using var contenido = await respuesta.Content.ReadAsStreamAsync();
+            Lista = await JsonSerializer.DeserializeAsync<List<ClienteDTO>>(contenido,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            errorGet = "";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//de no encontrarse o de suceder un error con el servidor se muestran mensajes
+        {
+            errorGet = "No hay elementos en la lista";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+        {
+            errorGet = await respuesta.Content.ReadAsStringAsync();
+            Console.WriteLine(errorGet);
+        }
+    }
+
+    //metodo para buscar un cliente, se puede buscar por nombre o id
+    private async Task Buscar()
+    {
+        if (busc.nombre != "")
+        {
+
+            if (int.TryParse(busc.nombre, out int id))//verifica si se ingreso un entero (id) o si es un string (nombre)
+            {
+                var httpClient = Http.CreateClient("PeluqueriaAPI");
+                using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/Cliente/id?id={id}");//comunicación con ClienteController
+
+                if (respuesta.IsSuccessStatusCode)//de encontrarse se reemplasa la lista actual con el cliente encontrado
+                {
+                    using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                    var cli = await JsonSerializer.DeserializeAsync<ClienteDTO>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    List<ClienteDTO> b = new List<ClienteDTO>();
+                    b.Add(cli);
+                    Lista = b;
+                    errorGetId = "";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+                {
+                    errorGetId = "No se encontro el cliente";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorGetId = await respuesta.Content.ReadAsStringAsync();
+                    Console.WriteLine(errorGetId);
+                }
+            }
+            else
+            {
+
+                var httpClient = Http.CreateClient("PeluqueriaAPI");
+                using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/Cliente/nombre?nombre={busc.nombre}");//busqueda por nombre
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                    var cli = await JsonSerializer.DeserializeAsync<ClienteDTO>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    List<ClienteDTO> b = new List<ClienteDTO>();
+                    b.Add(cli);
+                    Lista = b;
+                    errorGetId = "";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    errorGetId = "No se encontro el cliente";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorGetId = await respuesta.Content.ReadAsStringAsync();
+                    Console.WriteLine(errorGet);
+                }
+            }
+            _ = Task.Run(async () =>//los mensajes de error desaparecen despues de ochco segundos
+            {
+                await Task.Delay(8000);
+                errorGetId = "";
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        else
+        {
+            await Listar();// si pre presiona el boton bucar sin haber ingresado nada, se listaran todos los clientes
+        }
+    }
+
+    //metodo para agregar cliente
+    private async Task AgregarCliente()
+    {
+        //se serializa el objeto ClienteDTO llamado nuevo
+        var nuevojson = new StringContent(JsonSerializer.Serialize(nuevo),
+        Encoding.UTF8,
+        "application/json");
+
+        var httpcli = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpcli.PostAsync("api/Cliente/", nuevojson);//cominicación con ClienteController enviandole "nuevo" serializado
+
+
+        if (respuesta.IsSuccessStatusCode)
+        {
+
+            nuevo = await respuesta.Content.ReadFromJsonAsync<ClienteDTO>();//diversos mensajes 
+            if (nuevo == null)
+            {
+                errorPost = $"Ocurrió un error al mostrar los datos del cliente agregado";
+            }
+            else
+            {
+                errorPost = $"Se agrego el cliente {nuevo.Nombre} {nuevo.Apellido}";
+            }
+            nuevo = new ClienteDTO();
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            nuevo = new ClienteDTO();
+            errorPost = $"Ocurrió un error al agregar el cliente";
+        }
+        else
+        {
+            nuevo = new ClienteDTO();
+            errorPost = await respuesta.Content.ReadAsStringAsync();
+        }
+        await Listar();// se recarga la lista
+        _ = Task.Run(async () =>//los mensajes desaparecen
+        {
+            await Task.Delay(8000);
+            errorPost = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private void SeleccionarEditar(ClienteDTO c)//al seleccioanr un cliente para editar sus datos se agregan en el objeto editado
+    {
+        editado.IdCliente = c.IdCliente;
+        editado.Nombre = c.Nombre;
+        editado.Apellido = c.Apellido;
+        editado.FechaRegistro = c.FechaRegistro;
+    }
+
+    //metodo para editar
+    private async Task Editar()
+    {
+        //se serializa el objeto editado
+        var editadojson = new StringContent(JsonSerializer.Serialize(editado), Encoding.UTF8, "application/json");
+        var httpcli = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpcli.PutAsync($"/api/Cliente/", editadojson);//editado se envia a ClienteController
+
+        if (respuesta.IsSuccessStatusCode)//se listan los clientes y se muestra un mensaje de exito
+        {
+            editado = new ClienteDTO();
+            await Listar();
+            var resultadoSerializado = await respuesta.Content.ReadAsStringAsync();
+            ClienteDTO c = JsonSerializer.Deserialize<ClienteDTO>(resultadoSerializado);
+            errorPut = $"Se edito el cliente {c.Nombre} {c.Apellido}";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            editado = new ClienteDTO();
+            errorPut = "No fue posible editar el cliente seleccionado";
+        }
+        else
+        {
+            editado = new ClienteDTO();
+            errorPut = await respuesta.Content.ReadAsStringAsync();
+
+        }
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorPut = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    //metodo para eliminar un cliente
+    private async Task Borrar(ClienteDTO c)
+    {
+        var httpclient = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpclient.DeleteAsync($"/api/Cliente/{c.IdCliente}");//se envia el id a ClienteController
+        if (respuesta.IsSuccessStatusCode)//mensaje de exito
+        {
+            await Listar();
+            errorDelete = $"Se elimino el cliente {c.Nombre} {c.Apellido}";
+
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound) //Mensajes de error
+        {
+            errorDelete = await respuesta.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            errorDelete = await respuesta.Content.ReadAsStringAsync();
+        }
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorDelete = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+}

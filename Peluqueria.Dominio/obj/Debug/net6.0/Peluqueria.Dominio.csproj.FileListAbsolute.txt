@@ -1,0 +1,12 @@
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\bin\Debug\net6.0\Peluqueria.Dominio.deps.json
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\bin\Debug\net6.0\Peluqueria.Dominio.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\bin\Debug\net6.0\Peluqueria.Dominio.pdb
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.csproj.AssemblyReference.cache
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.GeneratedMSBuildEditorConfig.editorconfig
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.AssemblyInfoInputs.cache
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.AssemblyInfo.cs
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.csproj.CoreCompileInputs.cache
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\refint\Peluqueria.Dominio.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\Peluqueria.Dominio.pdb
+D:\c# aplicaciones\Peluqueria\Peluqueria.Dominio\obj\Debug\net6.0\ref\Peluqueria.Dominio.dll

@@ -1,0 +1,70 @@
+﻿@page "/"
+
+
+<div class="container">
+    <div class="row">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h1 class="card-title">Como funciona el sistema</h1>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>
+                        <p>
+                            El sistema cuenta con distintas pantallas: cliente, profesional, servicio, estado de reserva y reserva.
+                            Cada una con su respectivo CRUD. El flujo del sistema es el siguiente:
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Se crea un cliente.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Se crea un profesional.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Se crea un servicio.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Se crea un estado de la reserva.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <span>
+                                Los puntos anteriores pueden variar en el orden de creación, pero son necesarios para el funcionamiento de la pantalla de reservas.
+                            </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            En la pantalla de reservas se puede seleccionar o crear un cliente para dicha reserva. Luego se selecciona el profesional,
+                            el servicio y se coloca la fecha y hora en la cual se va a realizar. Finalmente, se presiona <strong>Agregar</strong>.
+                            No se podrá agregar una reserva si en la lista ya existe otra con el mismo profesional, día y hora.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Una vez listo, se cuenta con un servicio que puede editarse cambiando su estado a <em>Realizado</em> o <em>Cancelado</em>.
+                            Solo los pedidos cancelados y ausentes pueden ser borrados.
+                            Al ingresar a la página, se verifica si las reservas del día anterior están pendientes; de ser así,
+                            se les asigna automáticamente el estado de <em>Ausente</em>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            En la pantalla de edición de reservas se pueden editar todos los datos de una reserva pendiente: cliente, profesional, servicio, fecha y hora.
+                        </p>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,505 @@
+[
+  {
+    "ContainingType": "Peluqueria.Controller.ClienteController",
+    "Method": "Listar",
+    "RelativePath": "api/Cliente",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ClienteController",
+    "Method": "AgregarClientes",
+    "RelativePath": "api/Cliente",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clientes",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ClienteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ClienteController",
+    "Method": "EdtarCliente",
+    "RelativePath": "api/Cliente",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cliente",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ClienteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ClienteController",
+    "Method": "EliminarCliente",
+    "RelativePath": "api/Cliente/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ClienteController",
+    "Method": "BuscarID",
+    "RelativePath": "api/Cliente/id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ClienteController",
+    "Method": "BuscarNom",
+    "RelativePath": "api/Cliente/nombre",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.EstadoReservaController",
+    "Method": "Listar",
+    "RelativePath": "api/EstadoReserva",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.EstadoReservaController",
+    "Method": "AgregarEstadoReservas",
+    "RelativePath": "api/EstadoReserva",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EstadoReservas",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.EstadoReservaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.EstadoReservaController",
+    "Method": "EdtarEstadoReserva",
+    "RelativePath": "api/EstadoReserva",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EstadoReserva",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.EstadoReservaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.EstadoReservaController",
+    "Method": "EliminarEstadoReserva",
+    "RelativePath": "api/EstadoReserva/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.EstadoReservaController",
+    "Method": "BuscarID",
+    "RelativePath": "api/EstadoReserva/id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.EstadoReservaController",
+    "Method": "BuscarNom",
+    "RelativePath": "api/EstadoReserva/nombre",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ProfesionalController",
+    "Method": "Listar",
+    "RelativePath": "api/Profesional",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ProfesionalController",
+    "Method": "AgregarProfesional",
+    "RelativePath": "api/Profesional",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "profesional",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ProfesionalDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ProfesionalController",
+    "Method": "EdtarProfesional",
+    "RelativePath": "api/Profesional",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Profesional",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ProfesionalDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ProfesionalController",
+    "Method": "EliminarProfesional",
+    "RelativePath": "api/Profesional/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ProfesionalController",
+    "Method": "BuscarID",
+    "RelativePath": "api/Profesional/id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ProfesionalController",
+    "Method": "BuscarNom",
+    "RelativePath": "api/Profesional/nombre",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "Listar",
+    "RelativePath": "api/Reserva",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "EliminarReserva",
+    "RelativePath": "api/Reserva/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "EdtarEstadoAusente",
+    "RelativePath": "api/Reserva/ausente",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "EdtarReserva",
+    "RelativePath": "api/Reserva/editar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Reserva",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ReservaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "EdtarEstado",
+    "RelativePath": "api/Reserva/estado",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idReserva",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "idEst",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "BuscarID",
+    "RelativePath": "api/Reserva/id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "AgregarReservas",
+    "RelativePath": "api/Reserva/nuevo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Reservas",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ReservaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "BuscarProf",
+    "RelativePath": "api/Reserva/prof",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ReservaController",
+    "Method": "ReservaRepetida",
+    "RelativePath": "api/Reserva/repetida",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Reserva",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ReservaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ServicioController",
+    "Method": "Listar",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ServicioController",
+    "Method": "AgregarServicios",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Servicios",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ServicioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ServicioController",
+    "Method": "EdtarServicio",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Servicio",
+        "Type": "Peluqueria.Aplicacion.Data.ModelsDTO.ServicioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ServicioController",
+    "Method": "EliminarServicio",
+    "RelativePath": "api/Servicio/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ServicioController",
+    "Method": "BuscarID",
+    "RelativePath": "api/Servicio/id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Peluqueria.Controller.ServicioController",
+    "Method": "BuscarNom",
+    "RelativePath": "api/Servicio/nombre",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

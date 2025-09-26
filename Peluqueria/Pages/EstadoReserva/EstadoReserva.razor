@@ -1,0 +1,344 @@
+﻿@page "/EstadoReserva"
+@using Peluqueria.Aplicacion.Data.ModelsDTO
+@using System.Text.Json
+@using Peluqueria.Pages.EstadoReserva
+@using System.Text
+
+<h1 class="mb-4 text-center text-primary">EstadoReserva</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Agregar estado de reserva</h4>
+                        <!--formulario para agregar un estado de reserva-->
+                        <EditForm Model="nuevo" OnValidSubmit="AgregarEstadoReserva">
+                            <DataAnnotationsValidator />
+                            <div>
+                                <label for="ENuevNom" class="form-label">Nombre</label>
+                                <InputText id="ENuevNom" @bind-Value="nuevo.NombreEstado" class="form-control mb-3">PlaceholderContext="Nombre"</InputText>
+                                <ValidationMessage For="@(() => nuevo.NombreEstado)" />
+                            </div>
+                            <input id="Submit1" type="submit" value="Agregar" class="btn btn-primary" />
+                        </EditForm>
+                        <!--se muestran diversos mensaje, ya sea de exito o erro-->
+                        @if (!string.IsNullOrEmpty(errorPost))
+                        {
+                            <div class="alert alert-warning mt-2">@errorPost</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+                        <h4>Editar estado de reserva</h4>
+                        <EditForm Model="editado" OnValidSubmit="Editar">
+                            <!--formulario para editar el estad de la reserva-->
+                            <div>
+                                <input type="hidden" @bind="editado.IdEstado" />
+                                <label for="ESEditNom" class="form-label">Nombre</label>
+                                <InputText id="ESEditNom" @bind-Value="editado.NombreEstado" class="form-control mb-3">PlaceholderContext="Nombre"</InputText>
+                                <ValidationMessage For="@(() => nuevo.NombreEstado)" />
+                            </div>
+                            <input type="submit" value="Editar" class="btn btn-warning" />
+                            @if (!string.IsNullOrEmpty(errorPut))
+                            {
+                                <div class="alert alert-warning mt-2">@errorPut</div>
+                            }
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-md-6">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <!--formulario para buscar el estado de la reserva-->
+                    <h4 class="card-title">Buscar Estado de reservas</h4>
+                    <EditForm Model="busc">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="input-group">
+                            <input type="text" @bind-value="busc.nombre" class="form-control col-sm-3" />
+                            <input type="button" value="Buscar" @onclick="() => Buscar()" class="btn btn-outline-primary" />
+                        </div>
+                    </EditForm>
+                    @if (!string.IsNullOrEmpty(errorGetId))
+                    {
+                        <div class="alert alert-warning mt-2">@errorGetId</div>
+                    }
+                </div>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!--tabla para mostrar los estados de las reserva-->
+                    <div class="table-responsive shadow-sm" style="max-height: 600px;">
+                        <!--en caso de estar vacia la tabla se muestra un mensaje-->
+                        @if (!string.IsNullOrEmpty(errorGet))
+                        {
+                            <div class="text-info"><b>@errorGet</b></div>
+                        }
+                        else
+
+                        {
+                            <table class="table table-striped table-hover mb-0">
+                                <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
+                                    <tr>
+                                        <td>
+                                            Id
+                                        </td>
+                                        <td>
+                                            Nombre
+                                        </td>
+                                        <th colspan="2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Lista)
+                                    {
+                                        <tr>
+                                            <td>@item.IdEstado</td>
+                                            <td>@item.NombreEstado</td>
+                                            <td><input type="button" name="name" value="Editar" class="btn btn-sm btn-warning" @onclick="() => SeleccionarEditar(item)" /></td>
+                                            <td><input type="button" name="name" value="Eliminar" class="btn btn-sm btn-danger" @onclick="() => Borrar(item)" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        @if (!string.IsNullOrEmpty(errorDelete))
+                        {
+                            <div class="text-info"><b>@errorDelete</b></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<EstadoReservaDTO> Lista = new List<EstadoReservaDTO>();//lista para la tabla
+    private string errorGet, errorGetId, errorPut, errorDelete, errorPost;//strings para los mensajes
+    private EstadoReservaBuscar busc = new EstadoReservaBuscar();//distintos objetos para las operaciones
+    private EstadoReservaDTO nuevo = new EstadoReservaDTO();
+    private EstadoReservaDTO editado = new EstadoReservaDTO();
+
+    [Inject]
+    protected IHttpClientFactory Http { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Listar();
+    }
+
+    //metodo para listar los estados
+    private async Task Listar()
+    {
+        var httpClient = Http.CreateClient("PeluqueriaAPI");
+        using HttpResponseMessage respuesta = await httpClient.GetAsync("api/EstadoReserva");//comunicacion con EstadoReservaController
+
+        if (respuesta.IsSuccessStatusCode)//se lista los estados en caso de que todo este correcto
+        {
+            using var contenido = await respuesta.Content.ReadAsStreamAsync();
+            Lista = await JsonSerializer.DeserializeAsync<List<EstadoReservaDTO>>(contenido,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            errorGet = "";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            errorGet = "No hay elementos en la lista";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+        {
+            errorGet = await respuesta.Content.ReadAsStringAsync();
+            Console.WriteLine(errorGet);
+        }
+    }
+
+    //metodo para buscar los estados se puede buscar por id o nombre
+    private async Task Buscar()
+    {
+        if (busc.nombre != "")
+        {
+
+            if (int.TryParse(busc.nombre, out int id))
+            {
+                var httpClient = Http.CreateClient("PeluqueriaAPI");
+                using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/EstadoReserva/id?id={id}");//se envia el id a Controller
+
+                if (respuesta.IsSuccessStatusCode)//se lista los estados en caso de que todo este correcto
+                {
+                    using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                    var est = await JsonSerializer.DeserializeAsync<EstadoReservaDTO>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    List<EstadoReservaDTO> b = new List<EstadoReservaDTO>();
+                    b.Add(est);
+                    Lista = b;
+                    errorGetId = "";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+                {
+                    errorGetId = "No se encontro el estado de la reserva";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorGetId = await respuesta.Content.ReadAsStringAsync();
+                    Console.WriteLine(errorGetId);
+                }
+            }
+            else
+            {
+
+                var httpClient = Http.CreateClient("PeluqueriaAPI");
+                using HttpResponseMessage respuesta = await httpClient.GetAsync($"api/EstadoReserva/nombre?nombre={busc.nombre}");//se envia el nombre
+                if (respuesta.IsSuccessStatusCode)//se lista los estados en caso de que todo este correcto
+                {
+                    using var contenido = await respuesta.Content.ReadAsStreamAsync();
+                    var est = await JsonSerializer.DeserializeAsync<EstadoReservaDTO>(contenido,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    List<EstadoReservaDTO> b = new List<EstadoReservaDTO>();
+                    b.Add(est);
+                    Lista = b;
+                    errorGetId = "";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+                {
+                    errorGetId = "No se encontro el estado de la reserva";
+                }
+                else if (respuesta.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorGetId = await respuesta.Content.ReadAsStringAsync();
+                    Console.WriteLine(errorGetId);
+                }
+            }
+            _ = Task.Run(async () =>//los mensajes desaparecen a los ocho segundos
+            {
+                await Task.Delay(8000);
+                errorGetId = "";
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        else { await Listar(); }
+    }
+
+    //metodo para agregar un estado
+    private async Task AgregarEstadoReserva()
+    {
+        var nuevojson = new StringContent(JsonSerializer.Serialize(nuevo),//se serializa el objeto nuevo
+        Encoding.UTF8,
+        "application/json");
+
+        var httpcli = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpcli.PostAsync("api/EstadoReserva/", nuevojson);//se lo envia a controller
+
+
+        if (respuesta.IsSuccessStatusCode)//se lista en caso de ser exitosos el resultado
+        {
+            await Listar();
+            nuevo = await respuesta.Content.ReadFromJsonAsync<EstadoReservaDTO>();
+            if (nuevo == null)
+            {
+                errorPost = $"Ocurrió un error al mostrar los datos del estado de la reserva agregada";
+            }
+            else
+            {
+                errorPost = $"Se agrego el estado de la reserva {nuevo.NombreEstado}";
+            }
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            await Listar();
+            nuevo = new EstadoReservaDTO();
+            errorPost = $"Ocurrió un error al agregar el Estado de reserva";
+        }
+        else
+        {
+            await Listar();
+            nuevo = new EstadoReservaDTO();
+            errorPost = await respuesta.Content.ReadAsStringAsync();
+        }
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorPost = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    //al seleccioanr un estado para editar sus datos se agregan en el objeto editado
+    private void SeleccionarEditar(EstadoReservaDTO e)
+    {
+        editado.IdEstado = e.IdEstado;
+        editado.NombreEstado = e.NombreEstado;
+    }
+
+    //metodo para editar un estado
+    private async Task Editar()
+    {
+
+        var editadojson = new StringContent(JsonSerializer.Serialize(editado), Encoding.UTF8, "application/json");//se serializa editado
+        var httpcli = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpcli.PutAsync($"/api/EstadoReserva/", editadojson);//se lo envia a controller
+
+        if (respuesta.IsSuccessStatusCode)//se lista en caso de ser un exito
+        {
+            editado = new EstadoReservaDTO();
+            await Listar();
+            var resultadoSerializado = await respuesta.Content.ReadAsStringAsync();
+            EstadoReservaDTO e = JsonSerializer.Deserialize<EstadoReservaDTO>(resultadoSerializado);
+            errorPut = $"Se edito el Estado de reserva {e.NombreEstado}";
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            editado = new EstadoReservaDTO();
+            errorPut = "No fue posible editar el Estado de reserva seleccionado";
+        }
+        else
+        {
+            editado = new EstadoReservaDTO();
+            errorPut = await respuesta.Content.ReadAsStringAsync();
+
+        }
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorPut = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    //metodo para borrar el estado
+    private async Task Borrar(EstadoReservaDTO e)
+    {
+        var httpclient = Http.CreateClient("PeluqueriaAPI");
+        using var respuesta = await httpclient.DeleteAsync($"/api/EstadoReserva/{e.IdEstado}");//se envia el id al controller
+        if (respuesta.IsSuccessStatusCode)//se lista en caso de ser un exito
+        {
+            await Listar();
+            errorDelete = $"Se elimino el Estado de reserva {e.NombreEstado}";
+
+        }
+        else if (respuesta.StatusCode == System.Net.HttpStatusCode.NotFound)//mensajes de error
+        {
+            errorDelete = await respuesta.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            errorDelete = await respuesta.Content.ReadAsStringAsync();
+        }
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(8000);
+            errorDelete = "";
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+}

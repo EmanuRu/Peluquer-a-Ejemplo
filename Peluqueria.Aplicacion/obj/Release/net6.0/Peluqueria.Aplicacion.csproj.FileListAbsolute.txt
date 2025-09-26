@@ -1,0 +1,15 @@
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\bin\Release\net6.0\Peluqueria.Aplicacion.deps.json
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\bin\Release\net6.0\Peluqueria.Aplicacion.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\bin\Release\net6.0\Peluqueria.Aplicacion.pdb
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\bin\Release\net6.0\Peluqueria.Dominio.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\bin\Release\net6.0\Peluqueria.Dominio.pdb
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.csproj.AssemblyReference.cache
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.GeneratedMSBuildEditorConfig.editorconfig
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.AssemblyInfoInputs.cache
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.AssemblyInfo.cs
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.csproj.CoreCompileInputs.cache
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluquer.9E4A747A.Up2Date
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\refint\Peluqueria.Aplicacion.dll
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\Peluqueria.Aplicacion.pdb
+D:\c# aplicaciones\Peluqueria\Peluqueria.Aplicacion\obj\Release\net6.0\ref\Peluqueria.Aplicacion.dll
