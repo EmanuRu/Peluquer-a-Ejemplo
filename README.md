@@ -1,26 +1,26 @@
-#Gestión de Peluquería con Blazor y .NET 6
+# Gestión de Peluquería con Blazor y .NET 6
 
 Este proyecto es un ejercicio de práctica en .NET 6 donde desarrollé:
 
--Operaciones CRUD para clientes y productos.
+- Operaciones CRUD para clientes y productos.
 
--Integración con Azure SQL Database.
+- Integración con Azure SQL Database.
 
--Consumo de API interna para operaciones de la aplicación.
+- Consumo de API interna para operaciones de la aplicación.
 
--Manejo de validaciones y reglas de negocio básicas.
+- Manejo de validaciones y reglas de negocio básicas.
 
-##Tecnologías
+## Tecnologías
 
--.NET 6
+- .NET 6
 
--C#
+- C#
 
--Blazor Server
+- Blazor Server
 
--SQL Server
+- SQL Server
 
--Azure SQL Database
+- Azure SQL Database
 
-##Objetivo
+## Objetivo
 Explorar conceptos de desarrollo web full-stack con .NET 6 y Blazor, integración con bases de datos en la nube y despliegue en Azure.
