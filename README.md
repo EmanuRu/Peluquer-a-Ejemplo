@@ -10,17 +10,17 @@ Este proyecto es un ejercicio de práctica en .NET 6 donde desarrollé:
 
 - Manejo de validaciones y reglas de negocio básicas.
 
-## Tecnologías
+## Stack tecnológico y arquitectura
 
-- .NET 6
+- Backend: .NET 6 (C#), Entity Framework Core, Clean Architecture.
 
-- C#
+- Frontend: Blazor Server (SPA con Razor Components), Bootstrap.
 
-- Blazor Server
+- Base de datos: SQL Server / Azure SQL Database.
 
-- SQL Server
+- API REST: Desarrollo y consumo de API propia.
 
-- Azure SQL Database
+- Operaciones principales: CRUD para los distintos componentes.
 
 ## Objetivo
 Explorar conceptos de desarrollo web full-stack con .NET 6 y Blazor, integración con bases de datos en la nube y despliegue en Azure.
